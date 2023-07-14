@@ -18,7 +18,7 @@ from tools.utils import AverageMeter, ProgressMeter, accuracy, ForeverDataIterat
 from tools.lr_scheduler import StepwiseLR
 from data_processing import prepare_datasets_returnSourceVal,prepare_datasets_stratify_returnSourceVal
 from feedforward import BackboneClassifierNN_M4
-from CNN_feedforward import CNN_feedforward
+from CNN_feedforward import CNNClassifierNN_M4
 import numpy
 from sklearn import metrics
 import pandas as pd
@@ -79,26 +79,8 @@ def main(args: argparse.Namespace):
     print("source val input dimension:", source_val_dataset.features.shape[1])
     print("target test input dimension:", target_test_dataset.features.shape[1])
     num_classes = len(Counter(source_train_dataset.labels).keys())
-    # symptom_size, embedding_dim, number_of_classes
-    symptom_size = 62
-    embedding_dim = 500
 
-    word_index = {}  # dictionary mapping words to their index, obtained from your text data
-
-    embeddings_df = pd.read_csv('/Users/jason/Desktop/code/Deep-Transfer-Learning-Package-Release-Sep2022/data/cui2vec_pretrained.csv')
-
-    # Initialize embedding matrix with zeros
-    embedding_matrix = torch.zeros(len(word_index) + 1, embeddings_df.shape[1])
-    print("hello 1")
-    print(embeddings_df.index, flush=True)
-    print("hello2")
-    # Fill in the embedding matrix
-    for word, i in word_index.items():
-        if word in embeddings_df.index:
-            embedding_matrix[i] = torch.tensor(embeddings_df.loc[word].values)
-            embedding_matrix[i] = embedding_matrix[i].long()
-
-    classifier = CNN_feedforward(symptom_size, embedding_dim, num_classes, embedding_matrix).to(device)
+    classifier = BackboneClassifierNN_M4(backbone_in_dim, num_classes).to(device)
 
     print(classifier)
 
