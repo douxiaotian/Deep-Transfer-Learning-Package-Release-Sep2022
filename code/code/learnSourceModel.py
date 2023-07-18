@@ -79,24 +79,27 @@ def main(args: argparse.Namespace):
     print("source val input dimension:", source_val_dataset.features.shape[1])
     print("target test input dimension:", target_test_dataset.features.shape[1])
     num_classes = len(Counter(source_train_dataset.labels).keys())
+    print("number of classes")
+    print(num_classes)
     # symptom_size, embedding_dim, number_of_classes
     symptom_size = 62
     embedding_dim = 500
 
     word_index = {}  # dictionary mapping words to their index, obtained from your text data
 
-    embeddings_df = pd.read_csv('/Users/jason/Desktop/code/Deep-Transfer-Learning-Package-Release-Sep2022/data/cui2vec_pretrained.csv')
+    embeddings_df = pd.read_csv('/Users/jason/Desktop/code/Deep-Transfer-Learning-Package-Release-Sep2022/data/cui2vec_pretrained.csv', index_col=0)
 
     # Initialize embedding matrix with zeros
     embedding_matrix = torch.zeros(len(word_index) + 1, embeddings_df.shape[1])
     print("hello 1")
-    print(embeddings_df.index, flush=True)
+    print(embeddings_df.info())
+    print(embeddings_df.index)
     print("hello2")
     # Fill in the embedding matrix
     for word, i in word_index.items():
         if word in embeddings_df.index:
-            embedding_matrix[i] = torch.tensor(embeddings_df.loc[word].values)
-            embedding_matrix[i] = embedding_matrix[i].long()
+            embedding_matrix[i] = torch.Tensor(embeddings_df.loc[word].values).to(torch.int64)
+            #embedding_matrix[i] = embedding_matrix[i].long()
 
     classifier = CNN_feedforward(symptom_size, embedding_dim, num_classes, embedding_matrix).to(device)
 
