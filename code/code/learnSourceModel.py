@@ -83,8 +83,8 @@ def main(args: argparse.Namespace):
     print(num_classes)
     # symptom_size, embedding_dim, number_of_classes
     symptom_size = 62
-    embedding_dim = 500
-
+    # embedding_dim = 500
+    embedding_dim = 125
     word_index = {}  # dictionary mapping words to their index, obtained from your text data
 
     embeddings_df = pd.read_csv('/Users/jason/Desktop/code/Deep-Transfer-Learning-Package-Release-Sep2022/data/cui2vec_pretrained.csv', index_col=0)

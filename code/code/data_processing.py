@@ -43,8 +43,6 @@ def prepare_datasets(source_train_path, target_train_path, target_test_path, lab
     # features into dummy variables
     source_train_features, source_train_labels = parse_csv(source_train_path, label_key)
     source_train_features_dummies = pd.get_dummies(source_train_features) # TODO: assumes all features are categorical?
-
-
     target_train_features_overall, target_train_labels_overall = parse_csv(target_train_path, label_key)
     target_train_features_dummies_overall = pd.get_dummies(target_train_features_overall)
 
@@ -101,20 +99,32 @@ def prepare_datasets_returnSourceVal(source_train_path, target_train_path, targe
     # parse .csv's, split into features and labels, and convert categorical
     # features into dummy variables
     source_train_features, source_train_labels = parse_csv(source_train_path, label_key)
+    print("source_train features")
+    print(source_train_features)
     source_train_features_dummies = pd.get_dummies(source_train_features)  # TODO: assumes all features are categorical?
-
+    print("source train features dummies")
+    print(source_train_features_dummies)
     target_train_features_overall, target_train_labels_overall = parse_csv(target_train_path, label_key)
     target_train_features_dummies_overall = pd.get_dummies(target_train_features_overall)
 
-
+    print("target train features overall")
+    print(target_train_features_overall)
+    print("target train features dummies")
+    print(target_train_features_dummies_overall)
 
     target_test_features, target_test_labels = parse_csv(target_test_path, label_key)
     target_test_features_dummies = pd.get_dummies(target_test_features)
 
+
+
+
     # ensure that all feature data have the same set of columns
     all_feature_cols = source_train_features_dummies.keys().union(
         target_train_features_dummies_overall.keys().union(target_test_features_dummies.keys()))
-
+    print("shape of all feature cols")
+    print(all_feature_cols)
+    df_all_feature_cols = pd.DataFrame(all_feature_cols)
+    df_all_feature_cols.to_csv("all_feature_col.csv")
     source_train_diff_cols = all_feature_cols.difference(source_train_features_dummies.keys())
     for col in source_train_diff_cols:
         source_train_features_dummies[col] = [0 for _ in range(source_train_features_dummies.shape[0])]

@@ -14,7 +14,7 @@ class CNN_feedforward(nn.Module):
         padding = 1  # Padding for the input
         filter_sizes = [2, 3, 4]
         embedding_tensor = torch.tensor(embedding_matrix)
-        print("hello5")
+        print("embedding tensor size")
         print(embedding_tensor.size())
         self.embedding = nn.Embedding(symptom_size, embedding_dim)
         self.embedding.weight = nn.Parameter(embedding_tensor)
@@ -28,7 +28,7 @@ class CNN_feedforward(nn.Module):
 
 
     def forward(self, x):
-        print("hello3")
+        print("x dtype")
         print(x.dtype)
         x = x.long()
         print(x.dtype)
